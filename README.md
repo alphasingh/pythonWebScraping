@@ -19,3 +19,6 @@ Optional: can be scheduled via cron job (preferrable, as this will continuously 
 # contribute
 Take a pull and start working.
 For additions, raise a PR or contact me.
+
+# source
+https://www.geeksforgeeks.org/amazon-product-price-tracker-using-python/
