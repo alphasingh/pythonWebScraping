@@ -12,9 +12,9 @@ Works best in GNU/Linux environment (can work otherwise with some tweaks here an
 All the libraries mentioned in the starting of the code
 
 # automation
-1. scheduler is being used to schedule the job every one minute, change to suit your needs
+1. scheduler is being used to schedule the job every one minute, change to suit your needs (avoid using scheduler for prod)
 2. Instead of winsound, print('\a') works best for Linux as sound of default alert bell.
-Optional: can be scheduled via cron job (preferrable, as this will continuously need CPU resources until price match is found)
+3. Better: can be scheduled via cron job, as this will utilize resources on demand)
 
 # contribute
 Take a pull and start working.
