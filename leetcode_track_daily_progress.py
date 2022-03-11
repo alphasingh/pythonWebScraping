@@ -1,12 +1,8 @@
 from http.client import HTTPSConnection as Connect
 import json
+import sqlite3
 
-# keep updating old_submissions with recent_ac_submissions
-old_submissions = {
-    "alphasingh": [{'id': '657483035', 'title': 'Remove One Element to Make the Array Strictly Increasing', 'titleSlug': 'remove-one-element-to-make-the-array-strictly-increasing', 'timestamp': '1646954065'}, {'id': '656945992', 'title': 'Number of Closed Islands', 'titleSlug': 'number-of-closed-islands', 'timestamp': '1646883731'}, {'id': '656936936', 'title': 'Reconstruct a 2-Row Binary Matrix', 'titleSlug': 'reconstruct-a-2-row-binary-matrix', 'timestamp': '1646882747'}, {'id': '656928648', 'title': 'Cells with Odd Values in a Matrix', 'titleSlug': 'cells-with-odd-values-in-a-matrix', 'timestamp': '1646881813'}, {'id': '656909506', 'title': 'Add Two Numbers', 'titleSlug': 'add-two-numbers', 'timestamp': '1646879558'}, {'id': '656897861', 'title': 'Nearest Exit from Entrance in Maze', 'titleSlug': 'nearest-exit-from-entrance-in-maze', 'timestamp': '1646878098'}, {'id': '656789513', 'title': 'Count Square Sum Triples', 'titleSlug': 'count-square-sum-triples', 'timestamp': '1646861657'}, {'id': '656652854', 'title': 'Find Elements in a Contaminated Binary Tree', 'titleSlug': 'find-elements-in-a-contaminated-binary-tree', 'timestamp': '1646845304'}, {'id': '656646850', 'title': 'Shift 2D Grid', 'titleSlug': 'shift-2d-grid', 'timestamp': '1646844685'}, {'id': '656636607', 'title': 'Remove Duplicates from Sorted List II', 'titleSlug': 'remove-duplicates-from-sorted-list-ii', 'timestamp': '1646843584'}, {'id': '656115675', 'title': 'Maximum Non Negative Product in a Matrix', 'titleSlug': 'maximum-non-negative-product-in-a-matrix', 'timestamp': '1646774882'}, {'id': '655490709', 'title': 'Check if All Characters Have Equal Number of Occurrences', 'titleSlug': 'check-if-all-characters-have-equal-number-of-occurrences', 'timestamp': '1646700113'}, {'id': '655487587', 'title': 'Linked List Cycle', 'titleSlug': 'linked-list-cycle', 'timestamp': '1646699681'}, {'id': '655392693', 'title': 'Check if All Characters Have Equal Number of Occurrences', 'titleSlug': 'check-if-all-characters-have-equal-number-of-occurrences', 'timestamp': '1646685503'}, {'id': '654817184', 'title': 'Merge Two Sorted Lists', 'titleSlug': 'merge-two-sorted-lists', 'timestamp': '1646612121'}, {'id': '654815050', 'title': 'Count All Valid Pickup and Delivery Options', 'titleSlug': 'count-all-valid-pickup-and-delivery-options', 'timestamp': '1646611831'}, {'id': '654653819', 'title': 'Search Suggestions System', 'titleSlug': 'search-suggestions-system', 'timestamp': '1646591230'}, {'id': '654636107', 'title': 'Count Servers that Communicate', 'titleSlug': 'count-servers-that-communicate', 'timestamp': '1646589280'}, {'id': '654632086', 'title': 'Minimum Time Visiting All Points', 'titleSlug': 'minimum-time-visiting-all-points', 'timestamp': '1646588838'}, {'id': '654623617', 'title': 'Replace Non-Coprime Numbers in Array', 'titleSlug': 'replace-non-coprime-numbers-in-array', 'timestamp': '1646587911'}],
-    "jatinbindra171998": [{'id': '657231874', 'title': 'Find the Kth Largest Integer in the Array', 'titleSlug': 'find-the-kth-largest-integer-in-the-array', 'timestamp': '1646921685'}, {'id': '657226174', 'title': 'Minimum Difference Between Highest and Lowest of K Scores', 'titleSlug': 'minimum-difference-between-highest-and-lowest-of-k-scores', 'timestamp': '1646920932'}, {'id': '656631550', 'title': 'The Number of Weak Characters in the Game', 'titleSlug': 'the-number-of-weak-characters-in-the-game', 'timestamp': '1646843007'}, {'id': '656582955', 'title': 'Count Special Quadruplets', 'titleSlug': 'count-special-quadruplets', 'timestamp': '1646837223'}, {'id': '656070775', 'title': 'Detect Squares', 'titleSlug': 'detect-squares', 'timestamp': '1646768797'}, {'id': '655884632', 'title': 'Number of Pairs of Interchangeable Rectangles', 'titleSlug': 'number-of-pairs-of-interchangeable-rectangles', 'timestamp': '1646748602'}, {'id': '655876450', 'title': 'Reverse Prefix of Word', 'titleSlug': 'reverse-prefix-of-word', 'timestamp': '1646747545'}, {'id': '655183274', 'title': 'Sum of Beauty in the Array', 'titleSlug': 'sum-of-beauty-in-the-array', 'timestamp': '1646661816'}, {'id': '655169165', 'title': 'Final Value of Variable After Performing Operations', 'titleSlug': 'final-value-of-variable-after-performing-operations', 'timestamp': '1646659868'}, {'id': '654556392', 'title': 'Append K Integers With Minimal Sum', 'titleSlug': 'append-k-integers-with-minimal-sum', 'timestamp': '1646579563'}, {'id': '654529508', 'title': 'Create Binary Tree From Descriptions', 'titleSlug': 'create-binary-tree-from-descriptions', 'timestamp': '1646575797'}, {'id': '654171812', 'title': 'Cells in a Range on an Excel Sheet', 'titleSlug': 'cells-in-a-range-on-an-excel-sheet', 'timestamp': '1646534336'}, {'id': '654036707', 'title': 'Sort the Jumbled Numbers', 'titleSlug': 'sort-the-jumbled-numbers', 'timestamp': '1646513992'}, {'id': '654014122', 'title': 'Most Frequent Number Following Key In an Array', 'titleSlug': 'most-frequent-number-following-key-in-an-array', 'timestamp': '1646510953'}, {'id': '652611731', 'title': 'Maximum Difference Between Increasing Elements', 'titleSlug': 'maximum-difference-between-increasing-elements', 'timestamp': '1646317112'}, {'id': '651979588', 'title': 'Find Missing Observations', 'titleSlug': 'find-missing-observations', 'timestamp': '1646234940'}, {'id': '651965845', 'title': 'Minimum Moves to Convert String', 'titleSlug': 'minimum-moves-to-convert-string', 'timestamp': '1646233277'}, {'id': '651959646', 'title': 'Minimum Operations to Make a Uni-Value Grid', 'titleSlug': 'minimum-operations-to-make-a-uni-value-grid', 'timestamp': '1646232542'}, {'id': '651942867', 'title': 'Two Out of Three', 'titleSlug': 'two-out-of-three', 'timestamp': '1646230532'}, {'id': '651287293', 'title': 'Remove Colored Pieces if Both Neighbors are the Same Color', 'titleSlug': 'remove-colored-pieces-if-both-neighbors-are-the-same-color', 'timestamp': '1646146274'}],
-    "sam_si": [{'id': '657403301', 'title': 'Number of Matching Subsequences', 'titleSlug': 'number-of-matching-subsequences', 'timestamp': '1646941622'}, {'id': '657364162', 'title': 'Number of Operations to Make Network Connected', 'titleSlug': 'number-of-operations-to-make-network-connected', 'timestamp': '1646936918'}, {'id': '657357480', 'title': 'Number of Provinces', 'titleSlug': 'number-of-provinces', 'timestamp': '1646936214'}, {'id': '657332618', 'title': 'Keys and Rooms', 'titleSlug': 'keys-and-rooms', 'timestamp': '1646933581'}, {'id': '657324557', 'title': 'Trapping Rain Water', 'titleSlug': 'trapping-rain-water', 'timestamp': '1646932716'}, {'id': '657321268', 'title': 'All Paths From Source to Target', 'titleSlug': 'all-paths-from-source-to-target', 'timestamp': '1646932357'}, {'id': '657261173', 'title': 'Count Numbers with Unique Digits', 'titleSlug': 'count-numbers-with-unique-digits', 'timestamp': '1646925517'}, {'id': '657237683', 'title': 'Longest Word in Dictionary through Deleting', 'titleSlug': 'longest-word-in-dictionary-through-deleting', 'timestamp': '1646922439'}, {'id': '657202157', 'title': 'Online Election', 'titleSlug': 'online-election', 'timestamp': '1646917491'}, {'id': '657104889', 'title': 'Path With Minimum Effort', 'titleSlug': 'path-with-minimum-effort', 'timestamp': '1646900917'}, {'id': '657065413', 'title': '3Sum', 'titleSlug': '3sum', 'timestamp': '1646895969'}, {'id': '657045986', 'title': 'Add Two Numbers', 'titleSlug': 'add-two-numbers', 'timestamp': '1646893887'}, {'id': '656536081', 'title': 'Nearest Exit from Entrance in Maze', 'titleSlug': 'nearest-exit-from-entrance-in-maze', 'timestamp': '1646830970'}, {'id': '656510245', 'title': 'Shortest Bridge', 'titleSlug': 'shortest-bridge', 'timestamp': '1646826728'}, {'id': '656503702', 'title': '01 Matrix', 'titleSlug': '01-matrix', 'timestamp': '1646825530'}, {'id': '656419406', 'title': 'Remove Duplicates from Sorted List II', 'titleSlug': 'remove-duplicates-from-sorted-list-ii', 'timestamp': '1646812096'}, {'id': '655962437', 'title': 'Find Eventual Safe States', 'titleSlug': 'find-eventual-safe-states', 'timestamp': '1646757413'}, {'id': '655890687', 'title': 'Push Dominoes', 'titleSlug': 'push-dominoes', 'timestamp': '1646749313'}, {'id': '655856316', 'title': 'Largest Sum of Averages', 'titleSlug': 'largest-sum-of-averages', 'timestamp': '1646744759'}, {'id': '655640511', 'title': 'Alphabet Board Path', 'titleSlug': 'alphabet-board-path', 'timestamp': '1646716365'}],
-    "": []}
+CODER_NAMES = ('alphasingh', 'jatinbindra171998', 'sam_si', 'rishiwho')
 
 
 # will consider title slug of each submission for uniqueness
@@ -15,7 +11,7 @@ def convert_to_hashable_iterable(submission_list):
 
 
 # default behaviour: last 100 AC submissions by alphasingh
-def get_user_ac_submissions(username="alphasingh", limit=100):
+def get_user_ac_submissions(old_submissions, username="alphasingh", limit=100):
     SIGNATURE = "recentAcSubmissions($username: String!, $limit: Int!)"
     USER = "{recentAcSubmissionList(username: $username, limit: $limit)"
     REQUIRED = "{id title titleSlug timestamp}}"
@@ -44,7 +40,37 @@ def get_user_ac_submissions(username="alphasingh", limit=100):
     print('fetched {} recent AC submissions for username {}'.format(len(recent), username))
     print('{} new submissions compared with old'.format(len(ac_submissions_in_one_day)))
     print('new submissions', ac_submissions_in_one_day)
+    return json_data
 
 
-for name in ('alphasingh', 'jatinbindra171998', 'sam_si'):
-    get_user_ac_submissions(name)
+def compare_diff_for_coders():
+    connection = sqlite3.connect('test.db')
+    db_cursor = connection.cursor()
+    # get old_submissions from DB
+    old_submissions = {name: [] for name in CODER_NAMES}
+    for row in db_cursor.execute('SELECT * FROM coders'):
+        name, json_data = row[0], json.loads(row[1])
+        old_submissions[name] = json_data['data']['recentAcSubmissionList']
+    for name in CODER_NAMES:
+        get_user_ac_submissions(old_submissions, name)
+    connection.close()
+
+
+def update_data_for_coders():
+    conn = sqlite3.connect('test.db')
+    c = conn.cursor()
+    c.execute('''DELETE FROM coders''')
+    old_submissions = {name: [] for name in CODER_NAMES}
+    for name in CODER_NAMES:
+        data_in_json = get_user_ac_submissions(old_submissions, name)
+        c.execute('''insert into coders values(?, ?)''', (name, json.dumps(data_in_json),))
+        conn.commit()
+    conn.close()
+
+
+if input('Do you want to update(1) or compare(2)?\n').strip() == '1':
+    print('Updating data for coders')
+    update_data_for_coders()
+else:
+    print('Comparing data for coders')
+    compare_diff_for_coders()
