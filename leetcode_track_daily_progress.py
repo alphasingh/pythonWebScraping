@@ -2,7 +2,7 @@ from http.client import HTTPSConnection as Connect
 import json
 import sqlite3
 
-CODER_NAMES = ('alphasingh', 'jatinbindra171998', 'sam_si', 'rishiwho')
+CODER_NAMES = ('alphasingh', 'jatinbindra171998', 'sam_si')
 
 
 # will consider title slug of each submission for uniqueness
