@@ -68,9 +68,8 @@ def update_data_for_coders():
     conn.close()
 
 
-if input('Do you want to update(1) or compare(2)?\n').strip() == '1':
+print('Comparing data for coders')
+compare_diff_for_coders()
+if input('Do you want to update?Y/n\n').strip().lower()[0] == 'y':
     print('Updating data for coders')
     update_data_for_coders()
-else:
-    print('Comparing data for coders')
-    compare_diff_for_coders()
